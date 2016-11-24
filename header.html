@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<script type='text/x-handlebars' data-template-name='list/topic-list-item.raw'>
+
+{{~#if bulkSelectEnabled}}
+<th class='star'>
+  <button class='btn bulk-select' title='{{i18n "topics.bulk.toggle"}}'><i class='fa fa-list'></i></button>
+</th>
+{{~/if}}
+  
+<td class='main-link clearfix'>
+  {{#if showThumbnail}}
+      {{raw "list/topic-thumbnail" topic=topic thumbnails=thumbnails}}
+  {{/if}}
+  {{raw "topic-status" topic=topic}}
+  {{topic-link topic}}
+  {{#unless view.showBadges}}
+    {{raw "topic-post-badges" unread=topic.unread newPosts=topic.displayNewPosts unseen=topic.unseen url=topic.lastUnreadUrl}}
+  {{/unless}}
+  <div>
+      {{#unless hideCategory}}
+          <span class='category-under-title'>{{category-link topic.category}}</span>
+          <a class='author-under-title' href="/users/{{topic.creator.username}}" data-auto-route="true" data-user-card="{{topic.creator.username}}">@{{topic.creator.username}}</a>
+          <span class='time-under-title'><i class="fa fa-clock-o"></i> {{format-date topic.bumpedAt format="medium-with-ago"}}</span>
+          <span class="view-under-title {{topic.viewsHeat}}"><i class="fa fa-eye"></i> {{number topic.views numberKey="views_long"}} lượt xem</span>
+          <span class='comment-under-title {{view.likesHeat}}'><i class="fa fa-comments-o"></i> {{number topic.replyCount noTitle="true"}} trả lời</span>
+          <span class='like-under-title'><i class="fa fa-heart-o"></i> {{number topic.like_count}} thích</span>
+      {{/unless}}
+ </div>
+  {{#if context.expandPinned}}
+      <div><span style="max-height: 60px;>{{raw "list/topic-excerpt" topic=topic}}</span></div>
+  {{/if}}
+  
+  <div class='tag-vi-tri'> 
+  <span class='tag-under-title'>{{#each context.topic.visibleListTags as |tag|}}<a style="color: #eeeeee;"}}">{{discourse-tag tag}}</a> {{/each}}</span>
+  </div>
+
+</td>
+
+</script>
+
+
+<script type='text/x-handlebars' data-template-name='topic-list-header.raw'>
+
+</script>
+
+<script type='text/x-handlebars' data-template-name='list/topic-excerpt.raw'>
+{{#if topic.hasExcerpt}}
+  <div class="topic-excerpt">
+    {{{topic.excerpt}}}
+    {{#if topic.excerptTruncated}}
+      <a href="{{topic.url}}">{{i18n}}</a>
+    {{/if}}
+  </div>
+{{/if}}
+</script>
